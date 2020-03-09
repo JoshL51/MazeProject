@@ -3,51 +3,51 @@ from PIL import Image
 from AStar import AStar
 
 
-def is_blocked(p):
+# checks to see if pixel is white (not black) [white = path]
+def isWhite(p):
     x, y = p
-    pixel = path_pixels[x, y]
-    if (pixel < 225):
+    pixel = pathPixels[x, y]
+    if pixel < 225:
         return True
 
 
-def von_neumann_neighbors(p):
+# checking the adjacent pixels in all directions for path
+def vonNeumannNeighbours(p):
     x, y = p
     print(p)
     neighbors = [(x - 1, y), (x, y - 1), (x + 1, y), (x, y + 1)]
     retval = []
     for p in neighbors:
-        if is_blocked(p):
+        if isWhite(p):
             continue
         else:
             retval.append(p)
     return retval
 
 
+# manhattan success criteria
 def manhattan(p1, p2):
     return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
 
-def squared_euclidean(p1, p2):
-    return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2
-
-
+# pixel location of start and finish points
 start = (69, 1996)
 goal = (1946, 43)
 
-# python mazesolver.py <mazefile> <outputfile>
-
-path_img = Image.open(sys.argv[1])
-path_pixels = path_img.load()
+pathImg = Image.open(sys.argv[1])
+pathPixels = pathImg.load()
 
 distance = manhattan
 heuristic = manhattan
 
-path = AStar(start, goal, von_neumann_neighbors, distance, heuristic)
+path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
 
 print("PATH.......")
 print(path)
 for position in path:
     x, y = position
-    path_pixels[x, y] = (255, 0, 0)  # red
+    pathPixels[x, y] = (255, 0, 0)  # red
 
-path_img.save(sys.argv[2])
+pathImg.save(sys.argv[2])
+
+# command: python mazesolver.py binary03.jpg completeAStar.jpg
