@@ -1,6 +1,7 @@
 import sys
 from PIL import Image
 from AStar import AStar
+import cv2
 
 
 # checks to see if pixel is white (not black) [white = path]
@@ -34,6 +35,9 @@ def manhattan(p1, p2):
 start = (69, 1996)
 goal = (1946, 43)
 
+# start = (16, 16)
+# goal = (481, 493)
+
 pathImg = Image.open(sys.argv[1])
 pathPixels = pathImg.load()
 
@@ -42,12 +46,15 @@ heuristic = manhattan
 
 path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
 
-print("PATH.......")
 print(path)
+
+path_img = Image.open(sys.argv[3])
+path_pixels = path_img.load()
+
 for position in path:
     x, y = position
-    pathPixels[x, y] = (255, 0, 0)  # red
+    path_pixels[x, y] = (255, 0, 0)  # red
 
-pathImg.save(sys.argv[2])
+path_img.save(sys.argv[2])
 
-# command: python mazesolver.py binary03.jpg completeAStar.jpg
+# command: python3 mazesolver.py binary03.jpg completeAStar.jpg

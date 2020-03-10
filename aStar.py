@@ -13,6 +13,7 @@ def AStar(start, goal, neighbourNodes, distance, costEstimate):
     closedset = set()
     cameFrom = {start: None}
 
+    i = 0
     while openset:
         current = min(openset, key=lambda x: f_score[x])
         if current == goal:
@@ -30,4 +31,10 @@ def AStar(start, goal, neighbourNodes, distance, costEstimate):
             cameFrom[neighbour] = current
             g_score[neighbour] = tentative_g_score
             f_score[neighbour] = tentative_g_score + costEstimate(neighbour, goal)
+
+        # if i % 10000 == 0:
+        #     print("ten thousand done")
+        # This section would be to print out the maze every 10000 iterations
+        # I would also like this to mark the visited cells as gray to show the method
+        # i = i + 1
     return []
