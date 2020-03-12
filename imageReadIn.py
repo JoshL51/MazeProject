@@ -94,6 +94,7 @@ ret, binary = cv2.threshold(warp, 127, 255, cv2.THRESH_BINARY)
 # print image function
 cv2.imwrite("binary04.jpg", binary)
 
+# needed another copy of the image in RGB so the final overlay function would work!
 backToRGB = cv2.cvtColor(warp.copy(), cv2.COLOR_GRAY2RGB)
 
 cv2.imwrite("clean.jpg", backToRGB)

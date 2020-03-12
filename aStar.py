@@ -1,13 +1,15 @@
 def AStar(start, goal, neighbourNodes, distance, costEstimate):
     def reconstructPath(cameFrom, currentNode):
         path = []
-        #
+        # cycles through nodes moving the current to the end of the list and finally reversed to give the path
         while currentNode is not None:
             path.append(currentNode)
             currentNode = cameFrom[currentNode]
         return list(reversed(path))
 
+    # g_score is the distance to the start
     g_score = {start: 0}
+    # f_score is the sum of the distance to the start and the manhattan cost tot he goal
     f_score = {start: g_score[start] + costEstimate(start, goal)}
     openset = {start}
     closedset = set()
