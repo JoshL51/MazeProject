@@ -17,7 +17,7 @@ commandLine = [
     (1, 0),
     (0, 0)
 ]
-
+waitTime = 0.001
 currentY = 0
 currentX = 0
 actionList = []
@@ -67,16 +67,24 @@ for action in actionList:
     for pin in motorPinsY:
         GPIO.setup(pin, GPIO.OUT)
         GPIO.output(pin, 0)
-
-    for i in range(8):
+# may need to move the *8 out of the bracket and also hopefully zero doesnt break it!
+    for i in range(abs(moveX)*8):
 
         for halfStep in range(8):
 
             for pin in range(4):
                 GPIO.output(motorPinsX[pin], halfStepSeq[halfStep][pin])
+
+            time.sleep(waitTime)
+
+    for j in range(abs(moveY)*8):
+
+        for halfStep in range(8):
+
+            for pin in range(4):
                 GPIO.output(motorPinsY[pin], halfStepSeq[halfStep][pin])
 
-            time.sleep(0.001)
+            time.sleep(waitTime)
 
 GPIO.cleanup()
 
