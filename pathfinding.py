@@ -1,6 +1,7 @@
 import sys
 from PIL import Image
 from AStar import AStar
+# from BFS import BFS
 
 
 # checks to see if pixel is white (not black) [white = path]
@@ -46,8 +47,10 @@ heuristic = manhattan
 
 path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
 
+# path = BFS(start, goal, vonNeumannNeighbours, distance)
+
 # Just here as a check
-print(path)
+# print(path)
 
 # recalling the binary image but in RGB from imageReadIn
 path_img = Image.open(sys.argv[3])

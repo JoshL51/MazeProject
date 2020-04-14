@@ -9,7 +9,7 @@ def AStar(start, goal, neighbourNodes, distance, costEstimate):
 
     # g_score is the distance to the start
     g_score = {start: 0}
-    # f_score is the sum of the distance to the start and the manhattan cost tot he goal
+    # f_score is the sum of the distance to the start and the manhattan cost to the goal
     f_score = {start: g_score[start] + costEstimate(start, goal)}
     openset = {start}
     closedset = set()
