@@ -1,4 +1,4 @@
-def BFS(start, goal, neighbourNodes, distance):
+def Greedy(start, goal, neighbourNodes, distance, costEstimate):
 
     def reconstructPath(cameFrom, currentNode):
         path = []
@@ -8,13 +8,15 @@ def BFS(start, goal, neighbourNodes, distance):
             currentNode = cameFrom[currentNode]
         return list(reversed(path))
 
-    distToStart = {start: 0}
+    # distToEnd is the distance to the start
+    distToEnd = {start: costEstimate(start, goal)}
     openset = {start}
     closedset = set()
     cameFrom = {start: None}
 
+    i = 0
     while openset:
-        current = min(openset, key=lambda x: distToStart[x])
+        current = min(openset, key=lambda x: distToEnd[x])
         if current == goal:
             return reconstructPath(cameFrom, goal)
         openset.remove(current)
@@ -24,10 +26,15 @@ def BFS(start, goal, neighbourNodes, distance):
                 continue
             if neighbour not in openset:
                 openset.add(neighbour)
-            tempDistToStart = distToStart[current] + distance(current, neighbour)
-            if tempDistToStart >= distToStart.get(neighbour, float('inf')):
+            tempDistToEnd = distToEnd[current] - distance(current, neighbour)
+            if tempDistToEnd >= distToEnd.get(neighbour, float('inf')):
                 continue
             cameFrom[neighbour] = current
-            distToStart[neighbour] = tempDistToStart
-    return []
+            distToEnd[neighbour] = costEstimate(neighbour, goal)
 
+        # if i % 10000 == 0:
+        #     print("ten thousand done")
+        # This section would be to print out the maze every 10000 iterations
+        # I would also like this to mark the visited cells as gray to show the method
+        # i = i + 1
+    return []
