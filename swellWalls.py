@@ -29,15 +29,15 @@ wallPixels = pathImg.load()
 image = cv2.imread(sys.argv[1])
 
 swell = []
-for i in range(20, (image.shape[0] - 20)):
-    for j in range(20, (image.shape[1] - 20)):
+for i in range(10, (image.shape[0] - 10)):
+    for j in range(10, (image.shape[1] - 10)):
         # walls = box(wallPixels)
         if np.all(image[i, j] != [0, 0, 0]):
             continue
         else:
             # block = image[i - 3:i + 3, j - 3:j + 3]
-            for x in range((i - 20), (i + 20)):
-                for y in range((j - 20), (j + 20)):
+            for x in range((i - 10), (i + 10)):
+                for y in range((j - 10), (j + 10)):
                     pos = [x, y]
                     swell.append(pos)
 
