@@ -31,6 +31,10 @@ def Dijkstras(start, goal, neighbourNodes, distance):
             cameFrom[neighbour] = current
             distToStart[neighbour] = tempDistToStart
 
-            
+            # if i % 10000 == 0:
+            #     print("ten thousand done")
+            # This section would be to print out the maze every 10000 iterations
+            # I would also like this to mark the visited cells as gray to show the method
+            # i = i + 1
     return []
 
