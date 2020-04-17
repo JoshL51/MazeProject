@@ -1,4 +1,5 @@
 import sys
+import cv2
 import time
 import numpy
 from PIL import Image
@@ -79,8 +80,8 @@ def diagonal(p1, p2):
 
 
 # pixel location of start and finish points
-start = (69, 1996)
-goal = (1946, 43)
+start = (60, 1980)
+goal = (1935, 60)
 
 # Start coordinates for the smallerBoi
 # start = (16, 16)
@@ -89,8 +90,9 @@ goal = (1946, 43)
 pathImg = Image.open(sys.argv[1])
 pathPixels = pathImg.load()
 
+
 distance = manhattan        # Doesn't matter the method so much as the magnitude is always 1
-heuristic = euclideanSquared       # Heuristic h_score in some notation is costEstimate in mine
+heuristic = manhattan       # Heuristic h_score in some notation is costEstimate in mine
 
 # path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
 
@@ -107,7 +109,7 @@ path_pixels = path_img.load()
 
 for position in path:
     x, y = position
-    path_pixels[x, y] = (255, 0, 0)  # red
+    path_pixels[x, y] = 255 # (0, 0, 0)  # red
 
 path_img.save(sys.argv[2])
 
