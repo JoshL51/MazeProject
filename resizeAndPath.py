@@ -57,8 +57,8 @@ smallImageDataRGB = smallImageData.convert('RGB')
 # checks to see if pixel is white (not black) [white = path]
 def isWhite(p):
     x, y = p
-    pixel = pathPixels[x, y]
-    if pixel < 255:
+    pixel = decomposedMazeData[x, y]
+    if pixel == 1:
         return True
 
 
@@ -86,10 +86,9 @@ def manhattan(p1, p2):
 
 
 # coordinates for TinyBoy
-start = (2, pixelSizeYDecomp - 1)
-goal = (pixelSizeXDecomp - 1, 2)
+start = (4, 10)
+goal = (10, 4)
 
-pathPixels = smallImageData.load()
 path_pixels = smallImageDataRGB.load()
 
 distance = manhattan  # Doesn't matter the method so much as the magnitude is always 1
@@ -100,7 +99,6 @@ heuristic = manhattan  # Heuristic h_score in some notation is costEstimate in m
 # path = Greedy(start, goal, vonNeumannNeighbours, distance, heuristic)
 
 path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
-
 
 for position in path:
     a, b = position
