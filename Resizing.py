@@ -1,8 +1,9 @@
 from PIL import Image
 
-baseWidth = 204
-img = Image.open('binary03.jpg')
+baseWidth = 23
+img = Image.open('simpleMaze.png')
 wPercent = (baseWidth / float(img.size[0]))
 hSize = int((float(img.size[1]) * float(wPercent)))
-img = img.resize((baseWidth, hSize), Image.ANTIALIAS)
-img.save('tinyImage_204.jpg')
+img = img.resize((baseWidth, hSize), 1) # or equivalent to 1 such as ANTIALIAS
+img.save('simpleMazeTiny_04.jpg')
+
