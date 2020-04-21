@@ -21,8 +21,8 @@ This draws an image with red gridlines on it for size reference. Use an integer 
 gridlines in pixels and then line this up with the walls/corridors in order to find correct
 decomposition size (for the ideal image this is 50 x 50).
 """
-pixelSizeY = 50
-pixelSizeX = 50
+pixelSizeY = int(imageDataRGB.shape[1]/23)
+pixelSizeX = int(imageDataRGB.shape[0]/23)
 
 imageDataPartitioned = np.copy(imageDataRGB)
 for x in range(imageDataPartitioned.shape[0]):
@@ -45,6 +45,7 @@ for partX in range(pixelSizeXDecomp):
         for orgX in range(partX * pixelSizeX, (partX + 1) * pixelSizeX):
             for orgY in range(partY * pixelSizeY, (partY + 1) * pixelSizeY):
                 decomposedMazeData[partX, partY] += imageDataBW[orgX, orgY]
+        # print(decomposedMazeData[partX, partY]/(pixelSizeX * pixelSizeY)) 
         decomposedMazeData[partX, partY] = round(decomposedMazeData[partX, partY] / (pixelSizeX * pixelSizeY))
 
 # print(decomposedMazeData)  # print array of pixel values, 0 is wall, 1 is corridor
@@ -58,7 +59,7 @@ smallImageDataRGB = smallImageData.convert('RGB')
 def isWhite(p):
     x, y = p
     pixel = decomposedMazeData[x, y]
-    if pixel == 1:
+    if pixel == 0:
         return True
 
 
@@ -86,24 +87,37 @@ def manhattan(p1, p2):
 
 
 # coordinates for TinyBoy
-start = (4, 10)
-goal = (10, 4)
+start = (1, 21)
+goal = (21, 1)
 
-path_pixels = smallImageDataRGB.load()
+# path_pixels = smallImageDataRGB.load()
 
 distance = manhattan  # Doesn't matter the method so much as the magnitude is always 1
 heuristic = manhattan  # Heuristic h_score in some notation is costEstimate in mine
 
-# path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
+path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
 
 # path = Greedy(start, goal, vonNeumannNeighbours, distance, heuristic)
 
-path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
+# path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
+
+print(path)
 
 for position in path:
     a, b = position
-    path_pixels[a, b] = 255  # (0, 0, 0)  # red
+    decomposedMazeData[a, b] = 255  # (0, 0, 0)  # red
 
-path_pixels.save(sys.argv[2])
+print(decomposedMazeData)
 
-# command: python3 resizeAndPath.py mazeIdeal.png tinySol.png
+niceImage = np.copy(decomposedMazeData)
+RGB = np.copy(smallImageDataRGB)
+for x in range(niceImage.shape[0]):
+    for y in range(niceImage.shape[1]):
+        if niceImage[x, y] == 255:
+            RGB[x, y] = [255, 0, 0]
+        if niceImage[x, y] == 0:
+            RGB[x, y] = [0, 0, 0]
+        if niceImage[x, y] == 1:
+            RGB[x, y] = [255, 255, 255]
+
+Image.fromarray(RGB).show()

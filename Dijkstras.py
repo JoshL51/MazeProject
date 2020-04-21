@@ -13,7 +13,7 @@ def Dijkstras(start, goal, neighbourNodes, distance):
     closedset = set()
     cameFrom = {start: None}
 
-    i = 0
+    # i = 0
     while openset:
         current = min(openset, key=lambda x: distToStart[x])
         if current == goal:

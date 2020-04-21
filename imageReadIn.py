@@ -4,7 +4,7 @@ import imutils
 import cv2
 
 # load image in as 0=grayscale name img
-img = cv2.imread('mazePhoto.jpg', 0)
+img = cv2.imread('realMaze.jpg', 0)
 
 ratio = img.shape[0] / 300.0
 
@@ -92,9 +92,9 @@ warp = cv2.warpPerspective(orig, M, (maxWidth, maxHeight))
 ret, binary = cv2.threshold(warp, 127, 255, cv2.THRESH_BINARY)
 
 # print image function
-cv2.imwrite("binary04.jpg", binary)
+cv2.imwrite("refinedMaze.png", binary)
 
 # needed another copy of the image in RGB so the final overlay function would work!
-backToRGB = cv2.cvtColor(warp.copy(), cv2.COLOR_GRAY2RGB)
-
-cv2.imwrite("clean.jpg", backToRGB)
+# backToRGB = cv2.cvtColor(warp.copy(), cv2.COLOR_GRAY2RGB)
+#
+# cv2.imwrite("clean.jpg", backToRGB)

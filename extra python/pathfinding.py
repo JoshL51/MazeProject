@@ -80,16 +80,16 @@ def diagonal(p1, p2):
 
 
 # pixel location of start and finish points
-# start = (60, 1980)
-# goal = (1935, 60)
+start = (60, 1980)
+goal = (1935, 60)
 
 # Start coordinates for the smallerBoi
 # start = (16, 16)
 # goal = (481, 493)
 
 # coordinates for TinyBoy
-start = (2, 22)
-goal = (22, 2)
+# start = (2, 22)
+# goal = (22, 2)
 
 pathImg = Image.open(sys.argv[1])
 pathPixels = pathImg.load()
