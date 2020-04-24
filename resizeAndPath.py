@@ -2,10 +2,12 @@ import numpy as np
 import cv2
 import sys
 import time
+import pickle
 from PIL import Image
 from AStar import AStar
 from Greedy import Greedy
 from Dijkstras import Dijkstras
+from pathToCommand import commandFunction
 
 maze = sys.argv[1]
 imageRGB = Image.open(maze).convert('RGB')  # This converts to RGB so we can draw colours
@@ -45,7 +47,7 @@ for partX in range(pixelSizeXDecomp):
         for orgX in range(partX * pixelSizeX, (partX + 1) * pixelSizeX):
             for orgY in range(partY * pixelSizeY, (partY + 1) * pixelSizeY):
                 decomposedMazeData[partX, partY] += imageDataBW[orgX, orgY]
-        # print(decomposedMazeData[partX, partY]/(pixelSizeX * pixelSizeY)) 
+        # print(decomposedMazeData[partX, partY]/(pixelSizeX * pixelSizeY))
         decomposedMazeData[partX, partY] = round(decomposedMazeData[partX, partY] / (pixelSizeX * pixelSizeY))
 
 # print(decomposedMazeData)  # print array of pixel values, 0 is wall, 1 is corridor
@@ -101,13 +103,13 @@ path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
 
 # path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
 
-print(path)
+# print(path)
 
 for position in path:
     a, b = position
     decomposedMazeData[a, b] = 255  # (0, 0, 0)  # red
 
-print(decomposedMazeData)
+# print(decomposedMazeData)
 
 niceImage = np.copy(decomposedMazeData)
 RGB = np.copy(smallImageDataRGB)
@@ -121,3 +123,9 @@ for x in range(niceImage.shape[0]):
             RGB[x, y] = [255, 255, 255]
 
 Image.fromarray(RGB).show()
+
+commandLine = commandFunction(start, goal, path)
+
+# print("\n\n")
+
+# print(commandLine)
