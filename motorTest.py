@@ -1,91 +1,89 @@
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BOARD)
 
-commandLine = [
-    # Coordinates test
-    (0, 0),
-    (1, 0),
-    (1, 1),
-    (0, 1),
-    (-1, 1),
-    (-1, 0),
-    (-1, -1),
-    (0, -1),
-    (1, -1),
-    (1, 0),
-    (0, 0)
-]
-waitTime = 0.001
-currentY = 0
-currentX = 0
-actionList = []
+def runMotors(commands):
+    GPIO.setmode(GPIO.BOARD)
 
-for command in commandLine:
-    moveX = 0
-    moveY = 0
-    motorPinsX = [11, 12, 13, 15]
-    motorPinsY = [31, 33, 35, 37]
-    x, y = command
+    commandLine = commands
 
-    if currentY != y:
-        moveY = y - currentY
-        currentY = y
+    waitTime = 0.009        # variable
+    stepperSteps = 10       # variable
 
-    if currentX != x:
-        moveX = x - currentX
-        currentX = x
+    currentY = 0
+    currentX = 0
+    actionList = []
 
-    if moveY < 0:
-        motorPinsY = list(reversed(motorPinsY))
+    for command in commandLine:
+        moveX = 0
+        moveY = 0
+        motorPinsX = [11, 12, 13, 15]
+        motorPinsY = [31, 33, 35, 37]
+        x, y = command
 
-    if moveX < 0:
-        motorPinsX = list(reversed(motorPinsX))
+        if currentY != y:
+            moveY = y - currentY
+            currentY = y
 
-    action = (moveX, moveY, motorPinsX, motorPinsY)
-    actionList.append(action)
+        if currentX != x:
+            moveX = x - currentX
+            currentX = x
 
-halfStepSeq = [
-    [1, 0, 0, 0],
-    [1, 1, 0, 0],
-    [0, 1, 0, 0],
-    [0, 1, 1, 0],
-    [0, 0, 1, 0],
-    [0, 0, 1, 1],
-    [0, 0, 0, 1],
-    [1, 0, 0, 1]
-]
+        if moveY < 0:
+            motorPinsY = list(reversed(motorPinsY))
 
-for action in actionList:
-    (moveX, moveY, motorPinsX, motorPinsY) = action
+        if moveX < 0:
+            motorPinsX = list(reversed(motorPinsX))
 
-    for pin in motorPinsX:
-        GPIO.setup(pin, GPIO.OUT)
-        GPIO.output(pin, 0)
+        action = (moveX, moveY, motorPinsX, motorPinsY)
+        actionList.append(action)
+    """
+    This is here of if i want less torque but more accuracy.
+    Make sure i change the names and the full step range.
+    halfStepSeq = [
+        [1, 0, 0, 0],
+        [1, 1, 0, 0],
+        [0, 1, 0, 0],
+        [0, 1, 1, 0],
+        [0, 0, 1, 0],
+        [0, 0, 1, 1],
+        [0, 0, 0, 1],
+        [1, 0, 0, 1]
+    ]
+    """
+    fullStepSeq = [
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
+    ]
+    for action in actionList:
+        (moveX, moveY, motorPinsX, motorPinsY) = action
 
-    for pin in motorPinsY:
-        GPIO.setup(pin, GPIO.OUT)
-        GPIO.output(pin, 0)
-# may need to move the *8 out of the bracket and also hopefully zero doesnt break it!
-    for i in range(abs(moveX)*8):
+        for pin in motorPinsX:
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, 0)
 
-        for halfStep in range(8):
+        for pin in motorPinsY:
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, 0)
+        # may need to move the *8 out of the bracket and also hopefully zero doesnt break it!
+        for i in range(abs(moveX) * stepperSteps):
 
-            for pin in range(4):
-                GPIO.output(motorPinsX[pin], halfStepSeq[halfStep][pin])
+            for fullStep in range(4):
 
-            time.sleep(waitTime)
+                for pin in range(4):
+                    GPIO.output(motorPinsX[pin], fullStepSeq[fullStep][pin])
 
-    for j in range(abs(moveY)*8):
+                time.sleep(waitTime)
 
-        for halfStep in range(8):
+        for j in range(abs(moveY) * stepperSteps):
 
-            for pin in range(4):
-                GPIO.output(motorPinsY[pin], halfStepSeq[halfStep][pin])
+            for fullStep in range(4):
 
-            time.sleep(waitTime)
+                for pin in range(4):
+                    GPIO.output(motorPinsY[pin], fullStepSeq[fullStep][pin])
 
-GPIO.cleanup()
+                time.sleep(waitTime)
 
-# camera software
+    GPIO.cleanup()
