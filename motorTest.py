@@ -8,7 +8,7 @@ def runMotors(commands):
     commandLine = commands
 
     waitTime = 0.009        # variable
-    stepperSteps = 10       # variable
+    stepperSteps = 12       # variable
 
     currentY = 0
     currentX = 0
