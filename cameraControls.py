@@ -1,5 +1,6 @@
 import picamera
 import time
+import cv2
 
 
 def capture(testName):
@@ -26,6 +27,7 @@ def capture(testName):
 
     camera.start_preview()
     time.sleep(5)
+    cv2.waitKey()
     camera.capture(testName, '.png')
     # name this 'test_X_initial photo and address it to the folder just created
     camera.stop_preview()
