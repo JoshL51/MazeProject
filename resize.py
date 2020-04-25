@@ -50,16 +50,4 @@ def resize(image):
 
     smallImageDataRGB = smallImageData.convert('RGB')
 
-    niceImage = np.copy(decomposedMazeData)
-    RGB = np.copy(smallImageDataRGB)
-    for x in range(niceImage.shape[0]):
-        for y in range(niceImage.shape[1]):
-            if niceImage[x, y] == 1:
-                RGB[x, y] = [255, 255, 255]
-            if niceImage[runFile.start] == 0:
-                RGB[runFile.start] = [124, 252, 0]  # lawngreen
-                print('The ball has reached its destination!')
-            if niceImage[x, y] == 0:    # does this need to be an elif?
-                RGB[x, y] = [0, 0, 0]
-
-    Image.fromarray(RGB).show()
+    return smallImageDataRGB
