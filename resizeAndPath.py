@@ -85,11 +85,11 @@ def resizeToCommand(image, start, goal):
     distance = manhattan  # Doesn't matter the method so much as the magnitude is always 1
     heuristic = manhattan  # Heuristic h_score in some notation is costEstimate in mine
 
-    path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
+    # path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
 
     # path = Greedy(start, goal, vonNeumannNeighbours, distance, heuristic)
 
-    # path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
+    path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
 
     # print(path)
 

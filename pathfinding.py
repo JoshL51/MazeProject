@@ -1,5 +1,4 @@
 import sys
-import cv2
 import time
 import numpy
 from PIL import Image
@@ -100,9 +99,9 @@ heuristic = manhattan       # Heuristic h_score in some notation is costEstimate
 
 # path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
 
-# path = Greedy(start, goal, vonNeumannNeighbours, distance, heuristic)
+path = Greedy(start, goal, vonNeumannNeighbours, distance, heuristic)
 
-path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
+# path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
 
 # Just here as a check
 # print(path)
@@ -113,10 +112,12 @@ path_pixels = path_img.load()
 
 for position in path:
     x, y = position
-    path_pixels[x, y] = 255 # (0, 0, 0)  # red
+    path_pixels[x, y] = (0, 0, 255) # (0, 0, 0)  # red
 
 path_img.save(sys.argv[2])
 
 print("This test took", time.time() - startTime, "to run.")
 
-# command: python3 pathfinding.py binary03.jpg completeAStar.jpg clean.jpg
+print("The path is", len(path), "pixels long.")
+
+# command: python3 pathfinding.py binary03.jpg sol.png clean.jpg
