@@ -3,16 +3,16 @@ import time
 
 startTime = time.time()
 
-start = (1, 158)
-goal = (148, 1)
+start = (1, 21)
+goal = (21, 1)
 
-cells = 160
+cells = 23
 
-fileName = 'colossal.png'
+fileName = 'multipleSol.png'
 
-solName = 'mediumGreedySol.png'
+solName = 'multiSolAStarSol.png'
 
-algorithm = 'Greedy'
+algorithm = 'AStar'
 
 resizeToCommand(fileName, start, goal, solName, algorithm, cells)
 

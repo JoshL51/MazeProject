@@ -92,7 +92,7 @@ def resizeToCommand(image, start, goal, solName, algorithm, cells):
     if str(algorithm) == 'Dijkstras':
         path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
 
-    # print(path)
+    print(len(path))
 
     for position in path:
         a, b = position
