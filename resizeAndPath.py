@@ -6,7 +6,7 @@ from Dijkstras import Dijkstras
 from pathToCommand import commandFunction
 
 
-def resizeToCommand(image, start, goal):
+def resizeToCommand(image, start, goal, solName, algorithm, cells):
     maze = image
     imageRGB = Image.open(maze).convert('RGB')  # This converts to RGB so we can draw colours
     imageDataRGB = np.asarray(imageRGB)
@@ -21,8 +21,8 @@ def resizeToCommand(image, start, goal):
     gridlines in pixels and then line this up with the walls/corridors in order to find correct
     decomposition size (for the ideal image this is 50 x 50).
     """
-    pixelSizeY = int(imageDataRGB.shape[1] / 23)
-    pixelSizeX = int(imageDataRGB.shape[0] / 23)
+    pixelSizeY = int(imageDataRGB.shape[1] / cells)
+    pixelSizeX = int(imageDataRGB.shape[0] / cells)
 
     imageDataPartitioned = np.copy(imageDataRGB)
     for x in range(imageDataPartitioned.shape[0]):
@@ -38,7 +38,7 @@ def resizeToCommand(image, start, goal):
     """
     pixelSizeXDecomp = int(x / pixelSizeX)
     pixelSizeYDecomp = int(y / pixelSizeY)
-    decomposedMazeData = np.arange(pixelSizeXDecomp * pixelSizeYDecomp).reshape(pixelSizeXDecomp, pixelSizeYDecomp)
+    decomposedMazeData = np.zeros(pixelSizeXDecomp * pixelSizeYDecomp).reshape(pixelSizeXDecomp, pixelSizeYDecomp)
 
     for partX in range(pixelSizeXDecomp):
         for partY in range(pixelSizeYDecomp):
@@ -85,11 +85,12 @@ def resizeToCommand(image, start, goal):
     distance = manhattan  # Doesn't matter the method so much as the magnitude is always 1
     heuristic = manhattan  # Heuristic h_score in some notation is costEstimate in mine
 
-    # path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
-
-    # path = Greedy(start, goal, vonNeumannNeighbours, distance, heuristic)
-
-    path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
+    if str(algorithm) == 'AStar':
+        path = AStar(start, goal, vonNeumannNeighbours, distance, heuristic)
+    if str(algorithm) == 'Greedy':
+        path = Greedy(start, goal, vonNeumannNeighbours, distance, heuristic)
+    if str(algorithm) == 'Dijkstras':
+        path = Dijkstras(start, goal, vonNeumannNeighbours, distance)
 
     # print(path)
 
@@ -110,12 +111,12 @@ def resizeToCommand(image, start, goal):
             if niceImage[x, y] == 1:
                 RGB[x, y] = [255, 255, 255]
 
-    Image.fromarray(RGB).show()
+    Image.fromarray(RGB).save(solName)
 
-    commandLine = commandFunction(start, goal, path)
+    # commandLine = commandFunction(start, goal, path)
 
     # print("\n\n")
 
     # print(commandLine)
 
-    return commandLine
+    # return commandLine
